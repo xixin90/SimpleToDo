@@ -16,14 +16,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    Spinner spnAddClear;
     EditText etToDo;
     Button btnAdd;
     Button btnClear;
-    Button btnDelete;
     ListView lvToDo;
     ArrayList<String> alToDo;
     ArrayAdapter<String> aaToDo;
+
+    Spinner spnAddClear;
+    Button btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Simple To Do");
 
-        spnAddClear = findViewById(R.id.spinner);
         etToDo = findViewById(R.id.editTextToDo);
         btnAdd = findViewById(R.id.buttonAdd);
         btnClear = findViewById(R.id.buttonClear);
         lvToDo = findViewById(R.id.listViewToDo);
+
+        spnAddClear = findViewById(R.id.spinner);
+        btnDelete = findViewById(R.id.buttonDelete);
 
         alToDo = new ArrayList<>();
 
@@ -66,13 +69,17 @@ public class MainActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int index= Integer.parseInt(etToDo.getText().toString());
+
                 if (alToDo.size() == 0) {
-                    Toast.makeText(getApplicationContext(), "You don't have any task to remove", Toast.LENGTH_SHORT).show();
+                    String noItemMssg = "You don't have any task to remove";
+                    Toast.makeText(getApplicationContext(), noItemMssg , Toast.LENGTH_SHORT).show();
                     return;
+
                 } else {
-                    int index = Integer.parseInt(etToDo.getText().toString());
-                    if (alToDo.size() <= index) {
-                        Toast.makeText(MainActivity.this, "Wrong index number", Toast.LENGTH_SHORT).show();
+                    if (index >= alToDo.size()) {
+                        String noIndexMssg = "Wrong index number";
+                        Toast.makeText(MainActivity.this, noIndexMssg, Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         alToDo.remove(index);
@@ -85,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         spnAddClear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
+                switch (position){
                     case 0:
                         etToDo.setHint("Type in a new task here");
                         btnAdd.setEnabled(true);
